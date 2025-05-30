@@ -7,6 +7,8 @@ const LOCAL_STORAGE_KEY = "chat_messages";
 
 export const useChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   // ⬆️ Load messages from localStorage on mount
@@ -15,6 +17,7 @@ export const useChat = () => {
     if (stored) {
       setMessages(JSON.parse(stored));
     }
+    setIsFirstLoad(false);
   }, []);
 
   // ⬇️ Save messages to localStorage when they change
@@ -25,6 +28,7 @@ export const useChat = () => {
   }, [messages]);
 
   const sendMessage = async (text: string) => {
+    setIsLoading(true);
     const newMessage: Message = {
       text,
       role: ROLE.User,
@@ -51,12 +55,16 @@ export const useChat = () => {
     } catch (error) {
       console.error(error);
       setError("An error occurred while sending the message.🥲");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return {
     messages,
     error,
+    isLoading,
+    isFirstLoad,
     sendMessage,
   };
 };

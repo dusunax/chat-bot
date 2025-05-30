@@ -1,9 +1,11 @@
 "use client";
 import { useChat } from "@/hooks/useChat";
 import { Message } from "@/components/Message";
+import { LoadingIndecator } from "@/components/LoadingIndecator";
+import { FirstLoadingIndecator } from "@/components/FirstLoadingIndecator";
 
 export const Chat = () => {
-  const { messages, error, sendMessage } = useChat();
+  const { messages, error, sendMessage, isLoading, isFirstLoad } = useChat();
 
   /** Handles form submission to send a message. */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -25,6 +27,8 @@ export const Chat = () => {
         {messages.map((message) => (
           <Message key={message.id} message={message} />
         ))}
+        {isLoading && <LoadingIndecator />}
+        {isFirstLoad && <FirstLoadingIndecator />}
       </div>
     </div>
   );
