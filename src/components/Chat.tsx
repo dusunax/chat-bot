@@ -3,16 +3,28 @@ import { useChat } from "@/hooks/useChat";
 import { Message } from "@/components/Message";
 import { LoadingIndecator } from "@/components/LoadingIndecator";
 import { FirstLoadingIndecator } from "@/components/FirstLoadingIndecator";
+import { ErrorMessage } from "./ErrorMessage";
 
 export const Chat = () => {
-  const { messages, error, sendMessage, isLoading, isFirstLoad } = useChat();
+  const {
+    messages,
+    error,
+    isLoading,
+    isFirstLoad,
+    sendMessage,
+    resendLastMessage,
+  } = useChat();
 
   /** Handles form submission to send a message. */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const message = (e.target as HTMLFormElement).message.value;
     (e.target as HTMLFormElement).reset();
-    sendMessage(message);
+    try {
+      sendMessage(message);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -21,12 +33,14 @@ export const Chat = () => {
       <form onSubmit={handleSubmit}>
         <input type="text" name="message" />
         <button type="submit">Send</button>
-        {error && <p className="text-red-500">{error}</p>}
       </form>
       <div>
         {messages.map((message) => (
           <Message key={message.id} message={message} />
         ))}
+        {error && (
+          <ErrorMessage error={error} resendLastMessage={resendLastMessage} />
+        )}
         {isLoading && <LoadingIndecator />}
         {isFirstLoad && <FirstLoadingIndecator />}
       </div>

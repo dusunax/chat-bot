@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { ROLE, Message, createChatRequest } from "../types/chat";
-import { sendChatMessage } from "../services/chatService";
+import { ROLE, Message, createChatRequest } from "@/types/chat";
+import { sendChatMessage } from "@/services/chatService";
 
 const LOCAL_STORAGE_KEY = "chat_messages";
 
@@ -29,6 +29,7 @@ export const useChat = () => {
 
   const sendMessage = async (text: string) => {
     setIsLoading(true);
+    setError(null);
     const newMessage: Message = {
       text,
       role: ROLE.User,
@@ -52,11 +53,22 @@ export const useChat = () => {
           created: data.created,
         },
       ]);
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      if (error) {
+        setMessages((prev) => prev.slice(0, -1));
+      }
       setError("An error occurred while sending the message.🥲");
+      throw e;
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const resendLastMessage = async () => {
+    if (!messages.length) return;
+    const lastMessage = messages[messages.length - 1];
+    if (lastMessage.role === ROLE.User) {
+      await sendMessage(lastMessage.text);
     }
   };
 
@@ -66,5 +78,6 @@ export const useChat = () => {
     isLoading,
     isFirstLoad,
     sendMessage,
+    resendLastMessage,
   };
 };
