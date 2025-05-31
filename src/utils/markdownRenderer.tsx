@@ -1,8 +1,13 @@
-import ReactMarkdown from "react-markdown";
 import { useMemo } from "react";
+import Image from "next/image";
+import ReactMarkdown, { type Components } from "react-markdown";
 
-export const renderMarkdown = (text: string) => {
-  const components = useMemo(
+interface MarkdownRendererProps {
+  text: string;
+}
+
+export const MarkdownRenderer = ({ text }: MarkdownRendererProps) => {
+  const components: Components = useMemo(
     () => ({
       h1: ({ ...props }) => (
         <h1 className="text-2xl font-bold mb-4" {...props} />
@@ -31,12 +36,14 @@ export const renderMarkdown = (text: string) => {
           {...props}
         />
       ),
-      img: ({ ...props }) => (
+      img: ({ src, alt }) => (
         <span className="block relative mx-auto sm:w-[50%] w-full aspect-[16/9] dark:bg-gray-800 rounded">
-          <img
+          <Image
             className="absolute inset-0 w-full h-full object-contain"
-            loading="lazy"
-            {...props}
+            src={(src as string) || ""}
+            alt={alt ?? ""}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
           />
         </span>
       ),
@@ -69,5 +76,6 @@ export const renderMarkdown = (text: string) => {
     }),
     []
   );
+
   return <ReactMarkdown components={components}>{text}</ReactMarkdown>;
 };

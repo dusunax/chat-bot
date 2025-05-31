@@ -2,7 +2,7 @@ import { memo } from "react";
 import { Message as MessageType } from "@/types/chat";
 import { cn } from "@/utils/cn";
 import { formatDateToString } from "@/utils/formatDate";
-import { renderMarkdown } from "@/utils/markdownRenderer";
+import { MarkdownRenderer } from "@/utils/markdownRenderer";
 
 interface MessageProps {
   message: MessageType;
@@ -24,8 +24,9 @@ export const Message = memo(({ message, className }: MessageProps) => {
         {formatDateToString(message.created)}
       </div>
       <div className="prose dark:prose-invert max-w-none">
-        {renderMarkdown(message.text)}
+        <MarkdownRenderer text={message.text} />
       </div>
     </div>
   );
 });
+Message.displayName = "Message";

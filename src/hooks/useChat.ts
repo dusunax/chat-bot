@@ -22,13 +22,10 @@ export const useChat = (options: ChatOptions = DEFAULT_OPTIONS) => {
   const [streamingMessage, setStreamingMessage] = useState<string>("");
   const streamingMessageRef = useRef<string>("");
 
-  const onChunk = useCallback(
-    (chunk: string) => {
-      streamingMessageRef.current += chunk;
-      setStreamingMessage(streamingMessageRef.current);
-    },
-    [options]
-  );
+  const onChunk = useCallback((chunk: string) => {
+    streamingMessageRef.current += chunk;
+    setStreamingMessage(streamingMessageRef.current);
+  }, []);
 
   const sendMessage = useCallback(
     async (text: string) => {
@@ -37,7 +34,8 @@ export const useChat = (options: ChatOptions = DEFAULT_OPTIONS) => {
       }
       setIsLoading(true);
       setError(null);
-      resetStreamingMessage();
+      setStreamingMessage("");
+      streamingMessageRef.current = "";
 
       const userMsg: Message = {
         text,
@@ -73,10 +71,11 @@ export const useChat = (options: ChatOptions = DEFAULT_OPTIONS) => {
       } finally {
         setIsLoading(false);
         setIsFirstLoad(false);
-        resetStreamingMessage();
+        setStreamingMessage("");
+        streamingMessageRef.current = "";
       }
     },
-    [messages, options]
+    [messages, options, isLoading, onChunk]
   );
 
   const resendLastMessage = useCallback(() => {
@@ -87,11 +86,6 @@ export const useChat = (options: ChatOptions = DEFAULT_OPTIONS) => {
       sendMessage(lastUserMessage.text);
     }
   }, [messages, sendMessage]);
-
-  const resetStreamingMessage = useCallback(() => {
-    setStreamingMessage("");
-    streamingMessageRef.current = "";
-  }, []);
 
   // ⬆️ Load messages from localStorage on mount
   useEffect(() => {

@@ -17,9 +17,6 @@ dependencies:
   react-markdown:
     specifier: ^10.1.0
     version: 10.1.0(@types/react@19.1.6)(react@19.1.0)
-  uuid:
-    specifier: ^11.1.0
-    version: 11.1.0
 
 devDependencies:
   '@eslint/eslintrc':
@@ -37,9 +34,6 @@ devDependencies:
   '@types/react-dom':
     specifier: ^19
     version: 19.1.5(@types/react@19.1.6)
-  '@types/uuid':
-    specifier: ^10.0.0
-    version: 10.0.0
   eslint:
     specifier: ^9
     version: 9.27.0
@@ -794,10 +788,6 @@ packages:
   /@types/unist@3.0.3:
     resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
     dev: false
-
-  /@types/uuid@10.0.0:
-    resolution: {integrity: sha512-7gqG38EyHgyP1S+7+xomFtL+ZNHcKv6DwNaCZmJmo1vgMugyF3TCnXVg4t1uk89mLNwnLtnY3TpOpCOyp1/xHQ==}
-    dev: true
 
   /@typescript-eslint/eslint-plugin@8.33.0(@typescript-eslint/parser@8.33.0)(eslint@9.27.0)(typescript@5.8.3):
     resolution: {integrity: sha512-CACyQuqSHt7ma3Ns601xykeBK/rDeZa3w6IS6UtMQbixO5DWy+8TilKkviGDH6jtWCo8FGRKEK5cLLkPvEammQ==}
@@ -3933,11 +3923,6 @@ packages:
     dependencies:
       punycode: 2.3.1
     dev: true
-
-  /uuid@11.1.0:
-    resolution: {integrity: sha512-0/A9rDy9P7cJ+8w1c9WD9V//9Wj15Ce2MPz8Ri6032usz+NfePxx5AcN3bN+r6ZL6jEo066/yNYB3tn4pQEx+A==}
-    hasBin: true
-    dev: false
 
   /vfile-message@4.0.2:
     resolution: {integrity: sha512-jRDZ1IMLttGj41KcZvlrYAaI3CfqpLpfpf+Mfig13viT6NKvRzWZ+lXz0Y5D60w6uJIBAOGq9mSHf0gktF0duw==}
