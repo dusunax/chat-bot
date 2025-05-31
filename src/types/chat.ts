@@ -22,6 +22,33 @@ export interface ChatRequest {
   }[];
 }
 
+export interface ChatResponseChunk {
+  id: string;
+  object: string;
+  created: number;
+  model: Model;
+  choices: {
+    index: number;
+    delta: {
+      role: ROLE;
+      content: string;
+    };
+  }[];
+}
+
+export interface ChatOptions {
+  stream?: boolean;
+}
+
+export interface ChatActions {
+  onChunk: (chunk: string) => void;
+}
+
+export interface SendChatHandlerProps {
+  options: ChatOptions;
+  actions: ChatActions;
+}
+
 export interface ChatResponse {
   id: string;
   object: string;
@@ -31,24 +58,14 @@ export interface ChatResponse {
     index: number;
     message: {
       role: ROLE;
-      reasoning_content: string | null;
       content: string;
-      tool_calls: string[];
     };
     logprobs: string | null;
-    finish_reason: string;
-    stop_reason: string | null;
+    finish_reason: string | null;
   }[];
-  usage: {
-    prompt_tokens: number;
-    total_tokens: number;
-    completion_tokens: number;
-    prompt_tokens_details: string | null;
-  };
-  prompt_logprobs: string | null;
 }
 
-export const createChatRequest = (messages: Message[]): ChatRequest => {
+export const createChatRequestObj = (messages: Message[]): ChatRequest => {
   return {
     model: env.chat.model,
     messages: messages.map(({ text, role }) => ({

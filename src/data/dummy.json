@@ -9,7 +9,7 @@
     "text": "Hello! It seems like you might have sent a test message. How can I assist you today? If you have any questions or need help with something, feel free to ask! 😊",
     "role": "system",
     "id": "chatcmpl-df471ecfb93e48dfa70199bcb3431ca4",
-    "created": 1717152052000
+    "created": 1717152052
   },
   {
     "text": "test2",
@@ -21,7 +21,7 @@
     "text": "Hello again! It looks like you're testing messages. If you have any real questions or need assistance, just let me know! 😊",
     "role": "system",
     "id": "chatcmpl-41644911bb074c988c132fb0288271b0",
-    "created": 1717152063000
+    "created": 1717152063
   },
   {
     "text": "my name is testy",
@@ -33,7 +33,7 @@
     "text": "Nice to meet you, Testy! 😊 How can I help you today? Let me know if you have any questions or need assistance with anything.",
     "role": "system",
     "id": "chatcmpl-311e4d5cf91343d39b1b1eba67f17bbf",
-    "created": 1717152084000
+    "created": 1717152084
   },
   {
     "text": "what is my name?",
@@ -45,6 +45,6 @@
     "text": "Your name is **Testy**! 😊 I remember you mentioned it earlier. How can I assist you today, Testy?",
     "role": "system",
     "id": "chatcmpl-464c06bddb87451ca34316b9c4e9c322",
-    "created": 1717152090000
+    "created": 1717152090
   }
 ]

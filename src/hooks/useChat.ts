@@ -1,15 +1,97 @@
-import { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { ROLE, Message, createChatRequest } from "@/types/chat";
-import { sendChatMessage } from "@/services/chatService";
+import { useState, useEffect, useCallback, useRef } from "react";
+import {
+  ROLE,
+  createChatRequestObj,
+  type Message,
+  type ChatOptions,
+} from "@/types/chat";
+import { sendChatHandler } from "@/services/chatService";
+import { formatDateToUnix } from "@/utils/formatDate";
 
 const LOCAL_STORAGE_KEY = "chat_messages";
 
-export const useChat = () => {
+const DEFAULT_OPTIONS: Required<ChatOptions> = {
+  stream: true,
+};
+
+export const useChat = (options: ChatOptions = DEFAULT_OPTIONS) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [streamingMessage, setStreamingMessage] = useState<string>("");
+  const streamingMessageRef = useRef<string>("");
+
+  const onChunk = useCallback(
+    (chunk: string) => {
+      streamingMessageRef.current += chunk;
+      setStreamingMessage(streamingMessageRef.current);
+    },
+    [options]
+  );
+
+  const sendMessage = useCallback(
+    async (text: string) => {
+      if (text.trim() === "" || isLoading) {
+        return;
+      }
+      setIsLoading(true);
+      setError(null);
+      resetStreamingMessage();
+
+      const userMsg: Message = {
+        text,
+        role: ROLE.User,
+        id: crypto.randomUUID(),
+        created: formatDateToUnix(new Date()),
+      };
+      setMessages((prev) => [...prev, userMsg]);
+
+      try {
+        const data = await sendChatHandler(
+          createChatRequestObj([...messages, userMsg]),
+          { options, actions: { onChunk } }
+        );
+
+        let responseText = "";
+        if (options.stream) {
+          responseText = streamingMessageRef.current;
+        } else if (!options.stream && "message" in data.choices[0]) {
+          responseText = data.choices[0].message.content;
+        }
+
+        const systemMsg: Message = {
+          ...data,
+          role: ROLE.System,
+          text: responseText,
+        };
+
+        setMessages((prev) => [...prev, systemMsg]);
+      } catch (e) {
+        console.error("Failed to send message:", e);
+        setError(e instanceof Error ? e.message : "Failed to send message");
+      } finally {
+        setIsLoading(false);
+        setIsFirstLoad(false);
+        resetStreamingMessage();
+      }
+    },
+    [messages, options]
+  );
+
+  const resendLastMessage = useCallback(() => {
+    const lastUserMessage = [...messages]
+      .reverse()
+      .find((message) => message.role === ROLE.User);
+    if (lastUserMessage) {
+      sendMessage(lastUserMessage.text);
+    }
+  }, [messages, sendMessage]);
+
+  const resetStreamingMessage = useCallback(() => {
+    setStreamingMessage("");
+    streamingMessageRef.current = "";
+  }, []);
 
   // ⬆️ Load messages from localStorage on mount
   useEffect(() => {
@@ -27,56 +109,12 @@ export const useChat = () => {
     }
   }, [messages]);
 
-  const sendMessage = async (text: string) => {
-    setIsLoading(true);
-    setError(null);
-    const newMessage: Message = {
-      text,
-      role: ROLE.User,
-      id: uuidv4(),
-      created: new Date().getTime(),
-    };
-
-    setMessages((prev) => [...prev, newMessage]);
-
-    try {
-      const data = await sendChatMessage(
-        createChatRequest([...messages, newMessage])
-      );
-      const responseMessage = data.choices[0].message.content;
-      setMessages((prev) => [
-        ...prev,
-        {
-          text: responseMessage,
-          role: ROLE.System,
-          id: data.id,
-          created: data.created,
-        },
-      ]);
-    } catch (e) {
-      if (error) {
-        setMessages((prev) => prev.slice(0, -1));
-      }
-      setError("An error occurred while sending the message.🥲");
-      throw e;
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const resendLastMessage = async () => {
-    if (!messages.length) return;
-    const lastMessage = messages[messages.length - 1];
-    if (lastMessage.role === ROLE.User) {
-      await sendMessage(lastMessage.text);
-    }
-  };
-
   return {
     messages,
     error,
     isLoading,
     isFirstLoad,
+    streamingMessage,
     sendMessage,
     resendLastMessage,
   };
