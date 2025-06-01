@@ -5,9 +5,16 @@ import { SimulateJsonResponse } from "@/sample/simulateJsonResponse";
 const mockJsonResponse = SimulateJsonResponse();
 
 describe("useChat", () => {
+  let consoleSpy: jest.SpyInstance;
+
   beforeEach(() => {
     localStorage.clear();
     jest.clearAllMocks();
+    consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleSpy.mockRestore();
   });
 
   it("초기 상태 확인", () => {
@@ -111,9 +118,6 @@ describe("useChat", () => {
 
   it("상태 변화: 에러", async () => {
     const errorMessage = "❌ 채팅 응답 API 에러";
-    const consoleSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
     (global.fetch as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
 
     const { result } = renderHook(() => useChat({ stream: false }));
@@ -124,7 +128,6 @@ describe("useChat", () => {
 
     expect(result.current.error).toBe(errorMessage);
     expect(result.current.isLoading).toBe(false);
-    consoleSpy.mockRestore();
   });
 
   it("localStorage에 대화 내용 저장", async () => {
@@ -149,49 +152,35 @@ describe("useChat", () => {
     );
   });
 
-  // it("마지막 메시지 재전송", async () => {
-  //   const mockJsonResponse = {
-  //     id: "test-id",
-  //     object: "chat.completion",
-  //     created: Date.now(),
-  //     model: "gpt-3.5-turbo",
-  //     choices: [
-  //       {
-  //         index: 0,
-  //         message: {
-  //           role: ROLE.System,
-  //           content: "재전송된 응답입니다.",
-  //         },
-  //         logprobs: null,
-  //         finish_reason: "stop",
-  //       },
-  //     ],
-  //   };
+  it("에러 핸들링: 마지막 메시지 재전송", async () => {
+    (global.fetch as jest.Mock)
+      .mockRejectedValueOnce(new Error("요청 실패"))
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockJsonResponse,
+      });
 
-  //   (global.fetch as jest.Mock)
-  //     .mockResolvedValueOnce({
-  //       ok: true,
-  //       json: async () => mockJsonResponse,
-  //     })
-  //     .mockResolvedValueOnce({
-  //       ok: true,
-  //       json: async () => mockJsonResponse,
-  //     });
+    const { result } = renderHook(() => useChat({ stream: false }));
 
-  //   const { result } = renderHook(() => useChat({ stream: false }));
+    // 메시지 전송 시도 (실패)
+    await act(async () => {
+      await result.current.sendMessage("테스트 메시지 보내기").catch(() => {});
+    });
 
-  //   // 첫 번째 메시지 전송
-  //   await act(async () => {
-  //     await result.current.sendMessage("테스트 메시지 보내기");
-  //   });
+    expect(result.current.error).toBe("요청 실패");
+    expect(result.current.messages).toHaveLength(1); // 사용자 메시지만 있음
 
-  //   // 마지막 메시지 재전송
-  //   await act(async () => {
-  //     await result.current.resendLastMessage();
-  //   });
+    // 마지막 메시지를 재전송
+    await act(async () => {
+      await result.current.resendLastMessage();
+    });
 
-  //   expect(result.current.messages).toHaveLength(4); // 원래 메시지 2개 + 재전송 메시지 2개
-  //   expect(result.current.messages[2].text).toBe("테스트 메시지 보내기");
-  //   expect(result.current.messages[3].text).toBe("재전송된 응답입니다.");
-  // });
+    // 재전송 후 상태 확인
+    expect(result.current.error).toBeNull();
+    expect(result.current.messages).toHaveLength(2); // 사용자 메시지 + 응답
+    expect(result.current.messages[0].text).toBe("테스트 메시지 보내기"); // 사용자 메시지
+    expect(result.current.messages[1].text).toBe(
+      mockJsonResponse.choices[0].message.content
+    );
+  });
 });

@@ -5,7 +5,6 @@ import {
   type ChatResponseChunk,
   type SendChatHandlerProps,
 } from "@/types/chat";
-import { env } from "@/config/env";
 
 const API_URL = "/api/chat";
 
@@ -13,11 +12,6 @@ export const sendChatHandler = async (
   payload: ChatRequest,
   { options, actions }: SendChatHandlerProps
 ): Promise<ChatResponse | ChatResponseChunk> => {
-  if (!env.chat.apiUrl || !env.chat.apiKey) {
-    throw new Error(
-      "Chat API configuration is missing. Please check your environment variables."
-    );
-  }
   if (!actions.onChunk) {
     throw new Error("onChunk is required when stream is true");
   }

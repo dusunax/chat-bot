@@ -77,7 +77,7 @@ export const useChat = (options: ChatOptions = DEFAULT_OPTIONS) => {
         streamingMessageRef.current = "";
       }
     },
-    [messages, options, isLoading, onChunk]
+    [messages, options, isLoading, onChunk, error]
   );
 
   const resendLastMessage = useCallback(() => {

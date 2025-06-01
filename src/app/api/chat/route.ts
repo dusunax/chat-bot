@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 import { env } from "@/config/env";
 
 export async function POST(request: Request) {
+  if (!env.chat.apiUrl || !env.chat.apiKey) {
+    throw new Error(
+      "Chat API configuration is missing. Please check your environment variables."
+    );
+  }
   try {
     const body = await request.json();
 
