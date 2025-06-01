@@ -15,6 +15,7 @@
 - 🔄 자동 스크롤
 - ⚠️ 에러 처리 및 재시도 기능
 
+
 ## 기술 스택
 
 - **프레임워크**: Next.js 15
@@ -134,3 +135,7 @@ pnpm test:watch
   - 에러 상태
   - 메시지 전송 및 수신 로직
   - 스트리밍 응답 처리
+ 
+## 스크린샷
+
+<img src="https://github.com/user-attachments/assets/5658b78b-a7f2-4244-a44c-35c870717157" width="800">
