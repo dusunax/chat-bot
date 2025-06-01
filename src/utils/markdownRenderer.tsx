@@ -10,24 +10,24 @@ export const MarkdownRenderer = ({ text }: MarkdownRendererProps) => {
   const components: Components = useMemo(
     () => ({
       h1: ({ ...props }) => (
-        <h1 className="text-2xl font-bold mb-4" {...props} />
+        <h1 className="text-2xl font-bold mb-4 last:mb-0" {...props} />
       ),
       h2: ({ ...props }) => (
-        <h2 className="text-xl font-bold mb-3" {...props} />
+        <h2 className="text-xl font-bold mb-3 last:mb-0" {...props} />
       ),
       h3: ({ ...props }) => (
-        <h3 className="text-lg font-bold mb-2" {...props} />
+        <h3 className="text-lg font-bold mb-2 last:mb-0" {...props} />
       ),
       h4: ({ ...props }) => (
-        <h4 className="text-base font-bold mb-2" {...props} />
+        <h4 className="text-base font-bold mb-2 last:mb-0" {...props} />
       ),
       h5: ({ ...props }) => (
-        <h5 className="text-sm font-bold mb-1" {...props} />
+        <h5 className="text-sm font-bold mb-1 last:mb-0" {...props} />
       ),
       h6: ({ ...props }) => (
-        <h6 className="text-xs font-bold mb-1" {...props} />
+        <h6 className="text-xs font-bold mb-1 last:mb-0" {...props} />
       ),
-      p: ({ ...props }) => <p className="mb-4" {...props} />,
+      p: ({ ...props }) => <p className="mb-4 last:mb-0" {...props} />,
       a: ({ ...props }) => (
         <a
           className="text-blue-500 hover:underline"
@@ -37,7 +37,7 @@ export const MarkdownRenderer = ({ text }: MarkdownRendererProps) => {
         />
       ),
       img: ({ src, alt }) => (
-        <span className="block relative mx-auto sm:w-[50%] w-full aspect-[16/9] dark:bg-gray-800 rounded">
+        <span className="block relative mx-auto sm:w-[50%] w-full aspect-[16/9] rounded-lg">
           <Image
             className="absolute inset-0 w-full h-full object-contain"
             src={(src as string) || ""}
@@ -65,9 +65,11 @@ export const MarkdownRenderer = ({ text }: MarkdownRendererProps) => {
           {...props}
         />
       ),
-      ul: ({ ...props }) => <ul className="list-disc pl-6 mb-4" {...props} />,
+      ul: ({ ...props }) => (
+        <ul className="list-disc pl-6 mb-4 last:mb-0" {...props} />
+      ),
       ol: ({ ...props }) => (
-        <ol className="list-decimal pl-6 mb-4" {...props} />
+        <ol className="list-decimal pl-6 mb-4 last:mb-0" {...props} />
       ),
       li: ({ ...props }) => <li className="mb-1" {...props} />,
       hr: ({ ...props }) => (

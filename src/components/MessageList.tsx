@@ -5,7 +5,7 @@ import { FirstLoadingIndecator } from "@/components/FirstLoadingIndecator";
 import { ErrorMessage } from "./ErrorMessage";
 import { StreamingMessage } from "./StreamingMessage";
 
-interface MessageListProps extends ReturnType<typeof useChat> {}
+type MessageListProps = ReturnType<typeof useChat>;
 
 export const MessageList = ({
   messages,

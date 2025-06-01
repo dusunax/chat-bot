@@ -1,4 +1,5 @@
 import { ChatResponseChunk, ROLE } from "@/types/chat";
+import { formatDateToUnix } from "./formatDate";
 
 export const simulateStreamingResponse = async (
   onChunk: (chunk: string) => void
@@ -28,7 +29,7 @@ export const simulateStreamingResponse = async (
 
   return {
     id: "test-response" + Date.now(),
-    created: Date.now(),
+    created: formatDateToUnix(new Date()),
     model: "gpt-3.5-turbo",
     object: "chat.completion",
     choices: [

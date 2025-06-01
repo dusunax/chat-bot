@@ -1,7 +1,6 @@
 import { useChat } from "@/hooks/useChat";
 
-interface NewMessageFormProps
-  extends Pick<ReturnType<typeof useChat>, "sendMessage"> {}
+type NewMessageFormProps = Pick<ReturnType<typeof useChat>, "sendMessage">;
 
 export const NewMessageForm = ({ sendMessage }: NewMessageFormProps) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

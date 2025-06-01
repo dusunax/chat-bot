@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Message as MessageType } from "@/types/chat";
+import { Message as MessageType, ROLE } from "@/types/chat";
 import { cn } from "@/utils/cn";
 import { formatDateToString } from "@/utils/formatDate";
 import { MarkdownRenderer } from "@/utils/markdownRenderer";
@@ -10,21 +10,35 @@ interface MessageProps {
 }
 
 export const Message = memo(({ message, className }: MessageProps) => {
+  const isUser = message.role === ROLE.User;
+
   return (
     <div
       className={cn(
-        "p-4 rounded-lg mb-4",
-        message.role === "user"
-          ? "bg-blue-100 dark:bg-blue-900"
-          : "bg-gray-100 dark:bg-gray-800",
+        "flex flex-col mb-4",
+        isUser ? "items-end" : "items-start",
         className
       )}
     >
-      <div className="text-xs text-gray-500">
-        {formatDateToString(message.created)}
+      <div
+        className={cn(
+          "sm:max-w-[80%] rounded-lg px-4 sm:px-6 py-3 sm:py-4",
+          isUser
+            ? "bg-gray-200 dark:bg-gray-700"
+            : "bg-blue-100 dark:bg-blue-600"
+        )}
+      >
+        <div className="prose dark:prose-invert max-w-none">
+          <MarkdownRenderer text={message.text} />
+        </div>
       </div>
-      <div className="prose dark:prose-invert max-w-none">
-        <MarkdownRenderer text={message.text} />
+      <div
+        className={cn(
+          "text-xs text-gray-500 dark:text-gray-300 mt-1",
+          isUser ? "mr-1" : "ml-1"
+        )}
+      >
+        {formatDateToString(message.created)}
       </div>
     </div>
   );
