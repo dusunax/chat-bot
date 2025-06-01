@@ -6,7 +6,8 @@ import { Header } from "@/components/Header";
 
 export const metadata: Metadata = {
   title: "Chatbot",
-  description: "LLM Chatbot for AI-powered conversations",
+  description:
+    "LLM Chatbot: Markdown-supported Chat-bot application with nextjs, tailwindcss, typescript",
 };
 
 const comicNeue = Comic_Neue({

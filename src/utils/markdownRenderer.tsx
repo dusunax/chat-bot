@@ -30,12 +30,13 @@ export const MarkdownRenderer = ({ text }: MarkdownRendererProps) => {
       p: ({ ...props }) => <p className="mb-4 last:mb-0" {...props} />,
       a: ({ ...props }) => (
         <a
-          className="text-blue-500 hover:underline"
+          className="text-blue-400 underline"
           target="_blank"
           rel="noopener noreferrer"
           {...props}
         />
       ),
+      strong: ({ ...props }) => <span className="font-black" {...props} />,
       img: ({ src, alt }) => (
         <span className="block relative mx-auto sm:w-[50%] w-full aspect-[16/9] rounded-lg">
           <Image

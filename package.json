@@ -1,5 +1,6 @@
 {
-  "name": "assignment-interx",
+  "name": "chat-bot",
+  "description": "markdown-supported chat-bot application with nextjs, tailwindcss, typescript",
   "version": "0.1.0",
   "private": true,
   "scripts": {

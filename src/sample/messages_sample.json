@@ -1,0 +1,26 @@
+[
+  {
+    "id": "msg_1",
+    "role": "user",
+    "text": "안녕하세요!",
+    "created": 1717152052015
+  },
+  {
+    "id": "msg_2",
+    "role": "system",
+    "text": "안녕하세요! 무엇을 도와드릴까요?",
+    "created": 1717152005
+  },
+  {
+    "id": "msg_3",
+    "role": "user",
+    "text": "Next.js에 대해 알려주세요.",
+    "created": 1717152060
+  },
+  {
+    "id": "msg_4",
+    "role": "system",
+    "text": "# Next.js\n\n**Next.js**는 React 기반의 풀스택 웹 프레임워크입니다. 주요 특징은 다음과 같습니다:\n\n1. 서버 사이드 렌더링 (SSR)\n2. 정적 사이트 생성 (SSG)\n3. API 라우트\n4. 파일 기반 라우팅\n5. 자동 코드 분할\n\n더 자세한 내용이 필요하시다면 특정 부분에 대해 질문해 주세요.\n\n![Next.js Logo](https://vercel.com/vc-ap-vercel-marketing/_next/static/media/vercel-logotype-light.cf7eca76.svg)\n\n[Next.js 공식 홈페이지](https://nextjs.org/)",
+    "created": 1717152060
+  }
+]
