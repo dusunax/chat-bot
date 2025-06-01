@@ -21,7 +21,7 @@ export const ErrorMessage = ({
           d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
         />
       </svg>
-      <span className="text-sm font-bold">{message}</span>
+      <span className="text-sm font-bold">{error}</span>
       <button
         onClick={resendLastMessage}
         className="ml-2 underline text-xs shrink-0"

@@ -6,7 +6,7 @@ import { NewMessageForm } from "./NewMessageForm";
 
 export const Chat = () => {
   const { isStream } = useTheme();
-  const useChatProps = useChat({ stream: isStream });
+  const useChatProps = useChat({ stream: isStream ?? true });
 
   return (
     <>

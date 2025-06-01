@@ -1,5 +1,5 @@
 import { ChatResponse, ROLE } from "@/types/chat";
-import { formatDateToUnix } from "./formatDate";
+import { formatDateToUnix } from "@/utils/formatDate";
 
 export const SimulateJsonResponse = (): ChatResponse => {
   return {
