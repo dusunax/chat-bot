@@ -9,6 +9,7 @@ export const ThemeToggle = () => {
       onClick={toggleTheme}
       className="p-2 cursor-pointer"
       aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
+      data-testid="theme-toggle"
     >
       {theme === "light" ? (
         <svg
@@ -18,6 +19,7 @@ export const ThemeToggle = () => {
           strokeWidth={1.5}
           stroke="currentColor"
           className="w-5 h-5"
+          data-testid="theme-toggle-light"
         >
           <path
             strokeLinecap="round"
@@ -33,6 +35,7 @@ export const ThemeToggle = () => {
           strokeWidth={1.5}
           stroke="currentColor"
           className="w-5 h-5"
+          data-testid="theme-toggle-dark"
         >
           <path
             strokeLinecap="round"
