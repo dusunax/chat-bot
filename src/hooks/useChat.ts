@@ -43,7 +43,9 @@ export const useChat = (options: ChatOptions = DEFAULT_OPTIONS) => {
         id: crypto.randomUUID(),
         created: formatDateToUnix(new Date()),
       };
-      setMessages((prev) => [...prev, userMsg]);
+      if (!error) {
+        setMessages((prev) => [...prev, userMsg]);
+      }
 
       try {
         const data = await sendChatHandler(

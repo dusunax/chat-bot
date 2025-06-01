@@ -7,23 +7,25 @@ import {
 } from "@/types/chat";
 import { env } from "@/config/env";
 
-const chatRequestHeaders = {
-  Authorization: `Bearer ${env.chat.apiKey}`,
-  "Content-Type": "application/json",
-};
+const API_URL = "/api/chat";
 
 export const sendChatHandler = async (
   payload: ChatRequest,
   { options, actions }: SendChatHandlerProps
 ): Promise<ChatResponse | ChatResponseChunk> => {
+  if (!env.chat.apiUrl || !env.chat.apiKey) {
+    throw new Error(
+      "Chat API configuration is missing. Please check your environment variables."
+    );
+  }
+  if (!actions.onChunk) {
+    throw new Error("onChunk is required when stream is true");
+  }
+
   try {
-    validateEnv();
     let data;
 
     if (options.stream) {
-      if (!actions.onChunk) {
-        throw new Error("onChunk is required when stream is true");
-      }
       data = await processChunkedResponse(payload, actions.onChunk);
     } else {
       data = await processJsonResponse(payload);
@@ -36,23 +38,18 @@ export const sendChatHandler = async (
   }
 };
 
-const validateEnv = () => {
-  if (!env.chat.apiUrl || !env.chat.apiKey) {
-    throw new Error(
-      "Chat API configuration is missing. Please check your environment variables."
-    );
-  }
-};
-
 const processJsonResponse = async (
   payload: ChatRequest
 ): Promise<ChatResponse> => {
   try {
-    const response = await fetch(env.chat.apiUrl, {
+    const response = await fetch(API_URL, {
       method: "POST",
       body: JSON.stringify(payload),
-      headers: chatRequestHeaders,
     });
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
 
     return response.json();
   } catch (e) {
@@ -66,16 +63,16 @@ const processChunkedResponse = async (
   onChunk: (chunk: string) => void
 ): Promise<ChatResponseChunk> => {
   try {
-    const response = await fetch(env.chat.apiUrl, {
+    const response = await fetch(API_URL, {
       method: "POST",
       body: JSON.stringify({
         ...payload,
         stream: true,
       }),
-      headers: chatRequestHeaders,
     });
+
     if (!response.ok) {
-      throw new Error("Failed to send message");
+      throw new Error(response.statusText);
     }
     if (!response.headers.get("content-type")?.includes("text/event-stream")) {
       throw new Error(

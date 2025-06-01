@@ -1,6 +1,6 @@
 import { renderHook, act } from "@testing-library/react";
 import { useChat } from "@/hooks/useChat";
-import { SimulateJsonResponse } from "@/utils/simulateJsonResponse";
+import { SimulateJsonResponse } from "@/sample/simulateJsonResponse";
 
 const mockJsonResponse = SimulateJsonResponse();
 

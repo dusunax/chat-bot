@@ -49,7 +49,7 @@ pnpm dev
 
 ### 환경 변수 설정
 
-프로젝트 루트 디렉토리에 `.env.local` 파일을 생성하고 다음 환경 변수들을 설정해주세요:
+프로젝트 루트 디렉토리에 `.env` 파일을 생성하고 다음 환경 변수들을 설정해주세요:
 
 ```env
 NEXT_PUBLIC_CHAT_API_URL=your_api_url
@@ -64,6 +64,7 @@ NEXT_PUBLIC_CHAT_MODEL=your_model_name
 ```
 src/
 ├── app/                 # Next.js 앱 라우터
+│   └── api/             # API 라우트 (프록시)
 ├── components/          # React 컴포넌트
 │   ├── Message.tsx      # 메시지 컴포넌트
 │   ├── MessageList.tsx  # 메시지 목록 컴포넌트
