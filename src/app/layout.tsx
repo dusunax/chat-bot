@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Comic_Neue } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/contexts/ThemeContext";
+import { Header } from "@/components/Header";
 
 export const metadata: Metadata = {
   title: "Chatbot",
@@ -20,15 +22,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${comicNeue.variable} antialiased`}
-      >
-        <div className="flex flex-col min-h-screen">
-          <main className="flex-grow font-[family-name:var(--font-comic-neue)]">
-            {children}
-          </main>
-        </div>
-      </body>
+      <ThemeProvider>
+        <body
+          className={`${comicNeue.variable} antialiased dark:bg-black dark:text-white`}
+        >
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow font-[family-name:var(--font-comic-neue)]">
+              {children}
+            </main>
+          </div>
+        </body>
+      </ThemeProvider>
     </html>
   );
 }

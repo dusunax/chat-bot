@@ -1,14 +1,14 @@
 "use client";
-import { useState } from "react";
 import { useChat } from "@/hooks/useChat";
 import { Message } from "@/components/Message";
 import { LoadingIndecator } from "@/components/LoadingIndecator";
 import { FirstLoadingIndecator } from "@/components/FirstLoadingIndecator";
 import { ErrorMessage } from "./ErrorMessage";
 import { StreamingMessage } from "./StreamingMessage";
+import { useTheme } from "@/contexts/ThemeContext";
 
 export const Chat = () => {
-  const [stream, setStream] = useState(true);
+  const { isStream } = useTheme();
   const {
     messages,
     error,
@@ -17,7 +17,7 @@ export const Chat = () => {
     streamingMessage,
     sendMessage,
     resendLastMessage,
-  } = useChat({ stream });
+  } = useChat({ stream: isStream });
 
   /** Handles form submission to send a message. */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -33,9 +33,6 @@ export const Chat = () => {
 
   return (
     <div>
-      <button onClick={() => setStream(!stream)}>
-        {stream ? "Streaming" : "Non Streaming"}
-      </button>
       <h1>Chat</h1>
       <form onSubmit={handleSubmit}>
         <input type="text" name="message" />
