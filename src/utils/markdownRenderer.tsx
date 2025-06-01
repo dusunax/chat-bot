@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import Image from "next/image";
 import ReactMarkdown, { type Components } from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface MarkdownRendererProps {
   text: string;
@@ -76,9 +77,43 @@ export const MarkdownRenderer = ({ text }: MarkdownRendererProps) => {
       hr: ({ ...props }) => (
         <hr className="my-4 border-gray-300 dark:border-gray-600" {...props} />
       ),
+      table: ({ ...props }) => (
+        <div className="overflow-x-auto my-4">
+          <table
+            className="min-w-full border-collapse border border-gray-300 dark:border-gray-600"
+            {...props}
+          />
+        </div>
+      ),
+      thead: ({ ...props }) => <thead {...props} />,
+      tbody: ({ ...props }) => (
+        <tbody
+          className="divide-y divide-gray-300 dark:divide-gray-600"
+          {...props}
+        />
+      ),
+      tr: ({ ...props }) => (
+        <tr className="bg-gray-50 dark:bg-gray-800" {...props} />
+      ),
+      th: ({ ...props }) => (
+        <th
+          className="px-4 py-2 text-left font-semibold border bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-600"
+          {...props}
+        />
+      ),
+      td: ({ ...props }) => (
+        <td
+          className="px-4 py-2 border border-gray-300 dark:border-gray-600"
+          {...props}
+        />
+      ),
     }),
     []
   );
 
-  return <ReactMarkdown components={components}>{text}</ReactMarkdown>;
+  return (
+    <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
+      {text}
+    </ReactMarkdown>
+  );
 };

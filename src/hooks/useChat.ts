@@ -93,7 +93,11 @@ export const useChat = (options: ChatOptions = DEFAULT_OPTIONS) => {
   useEffect(() => {
     const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (stored) {
-      setMessages(JSON.parse(stored));
+      const parsed = JSON.parse(stored);
+      if (parsed[parsed.length - 1].role === ROLE.User) {
+        parsed.pop();
+      }
+      setMessages(parsed);
     }
     setIsFirstLoad(false);
   }, []);

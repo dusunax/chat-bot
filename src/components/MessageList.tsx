@@ -52,7 +52,7 @@ export const MessageList = ({
 
 const MessageListOuter = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="h-[calc(100vh-112px)] flex flex-col overflow-y-auto p-4">
+    <div className="h-[calc(100dvh-112px)] flex flex-col overflow-y-auto p-4">
       {children}
     </div>
   );
