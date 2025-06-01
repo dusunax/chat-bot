@@ -4,9 +4,12 @@ import { useTheme } from "@/contexts/ThemeContext";
 
 export const StreamToggle = () => {
   const { isStream, toggleStream } = useTheme();
+
+  if (isStream === null) return <div></div>;
+
   return (
     <button
-      className="p-2 cursor-pointer"
+      className="p-2 cursor-pointer animate-fade-in"
       onClick={toggleStream}
       aria-label={`Switch to ${isStream ? "Normal" : "Stream"} mode`}
       data-testid="stream-toggle"

@@ -1,11 +1,11 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
 
-type Theme = "light" | "dark";
+type Theme = "light" | "dark" | null;
 
 interface ThemeContextType {
   theme: Theme;
-  isStream: boolean;
+  isStream: boolean | null;
   toggleTheme: () => void;
   toggleStream: () => void;
 }
@@ -13,8 +13,8 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>("light");
-  const [isStream, setIsStream] = useState(false);
+  const [theme, setTheme] = useState<Theme | null>(null);
+  const [isStream, setIsStream] = useState<boolean | null>(null);
 
   useEffect(() => {
     // 유저가 설정한 테마가 있는지 확인
@@ -35,9 +35,13 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     // 테마 업데이트
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
-    localStorage.setItem("isStream", isStream.toString());
+    if (theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+      localStorage.setItem("theme", theme);
+    }
+    if (isStream !== null) {
+      localStorage.setItem("isStream", isStream.toString());
+    }
   }, [theme, isStream]);
 
   const toggleTheme = () => {

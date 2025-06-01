@@ -1,16 +1,31 @@
+import { useState } from "react";
 import { useChat } from "@/hooks/useChat";
 
 type NewMessageFormProps = Pick<ReturnType<typeof useChat>, "sendMessage">;
 
 export const NewMessageForm = ({ sendMessage }: NewMessageFormProps) => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const message = (e.target as HTMLFormElement).message.value;
-    (e.target as HTMLFormElement).reset();
-    try {
-      sendMessage(message);
-    } catch (error) {
-      console.error(error);
+    if (message.trim() && !isLoading) {
+      setIsLoading(true);
+      try {
+        sendMessage(message);
+        setMessage("");
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
     }
   };
 
@@ -21,15 +36,20 @@ export const NewMessageForm = ({ sendMessage }: NewMessageFormProps) => {
     >
       <textarea
         name="message"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        onKeyDown={handleKeyDown}
         className="w-full px-4 py-1 resize-none outline-none"
         placeholder="Type a message..."
         required
         autoFocus
+        disabled={isLoading}
       />
       <button
         type="submit"
         className="mx-2 shrink-0 w-8 h-8 flex items-center justify-center bg-gray-300 hover:bg-gray-300 dark:bg-gray-900 dark:hover:bg-gray-500 rounded-full transition-colors cursor-pointer"
         aria-label="Send message"
+        disabled={!message.trim() || isLoading}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

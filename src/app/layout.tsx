@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <ThemeProvider>
         <body
-          className={`${comicNeue.variable} antialiased dark:bg-black dark:text-white`}
+          className={`${comicNeue.variable} antialiased dark:bg-black dark:text-white transition-colors duration-200`}
         >
           <div className="flex flex-col min-h-screen">
             <Header />

@@ -9,7 +9,6 @@ export const StreamingMessage = ({
 }) => {
   return (
     <Message
-      className="border-2 border-green-500"
       message={{
         text: streamingMessage,
         role: ROLE.System,

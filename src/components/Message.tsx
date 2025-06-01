@@ -22,7 +22,7 @@ export const Message = memo(({ message, className }: MessageProps) => {
     >
       <div
         className={cn(
-          "sm:max-w-[80%] rounded-lg px-4 sm:px-6 py-3 sm:py-4",
+          "sm:max-w-[80%] rounded-lg px-4 sm:px-6 py-3 sm:py-4 break-all",
           isUser
             ? "bg-gray-200 dark:bg-gray-700"
             : "bg-blue-100 dark:bg-blue-600"

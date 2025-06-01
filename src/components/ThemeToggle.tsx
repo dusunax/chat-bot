@@ -3,11 +3,12 @@ import { useTheme } from "@/contexts/ThemeContext";
 
 export const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme();
+  if (theme === null) return <div></div>;
 
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 cursor-pointer"
+      className="p-2 cursor-pointer animate-fade-in"
       aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
       data-testid="theme-toggle"
     >
