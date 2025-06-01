@@ -97,6 +97,7 @@ const processChunkedResponse = async (
       if (done) break;
 
       const chunk = decoder.decode(value);
+      if (!chunk) break;
 
       // 여러 줄의 데이터를 처리
       const lines = chunk.split("\n");
