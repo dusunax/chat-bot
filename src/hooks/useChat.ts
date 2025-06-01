@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { v4 as uuidv4 } from "uuid";
 import {
   ROLE,
   createChatRequestObj,
@@ -40,7 +41,7 @@ export const useChat = (options: ChatOptions = DEFAULT_OPTIONS) => {
       const userMsg: Message = {
         text,
         role: ROLE.User,
-        id: crypto.randomUUID(),
+        id: uuidv4(),
         created: formatDateToUnix(new Date()),
       };
       if (!error) {
