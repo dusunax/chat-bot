@@ -54,7 +54,7 @@ describe("ThemeContext", () => {
     const toggleButton = screen.getByTestId("stream-toggle");
 
     // 초기 상태
-    expect(screen.getByTestId("stream-toggle-normal")).toBeInTheDocument();
+    expect(screen.getByTestId("stream-toggle-single")).toBeInTheDocument();
 
     // 첫 번째 토글
     fireEvent.click(toggleButton);
@@ -62,7 +62,7 @@ describe("ThemeContext", () => {
 
     // 두 번째 토글
     fireEvent.click(toggleButton);
-    expect(screen.getByTestId("stream-toggle-normal")).toBeInTheDocument();
+    expect(screen.getByTestId("stream-toggle-single")).toBeInTheDocument();
   });
 
   it("localStorage 테스트", () => {
