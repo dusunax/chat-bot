@@ -28,12 +28,7 @@ export const Message = memo(({ message, className }: MessageProps) => {
             : "bg-blue-100 dark:bg-blue-600 rounded-tl-xs"
         )}
       >
-        <MarkdownRenderer
-          text={
-            message.text +
-            "\n\n```\ncodedfsadfsadfasdfadsfasdfsadfadsfadsfasdfasddsfsadfasdfsadfdsafasdfasdf\n````"
-          }
-        />
+        <MarkdownRenderer text={message.text} />
       </div>
       <div
         className={cn(
