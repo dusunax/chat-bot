@@ -32,8 +32,8 @@
 
 1. 저장소 클론
 ```bash
-git clone https://github.com/yourusername/assignment-interx.git
-cd assignment-interx
+git clone https://github.com/dusunax/chat-bot.git
+cd chat-bot
 ```
 
 2. 의존성 설치
@@ -69,6 +69,7 @@ src/
 ├── components/          # React 컴포넌트
 │   ├── Message.tsx      # 메시지 컴포넌트
 │   ├── MessageList.tsx  # 메시지 목록 컴포넌트
+│   ├── MarkdownRenderer.tsx # 마크다운 랜더링 컴포넌트
 │   └── ...
 ├── config/              
 │   └── env.ts           # 환경 변수 객체 관리
@@ -82,9 +83,7 @@ src/
 ├── services/            # API 서비스
 │   └── chatService.ts   # 채팅 API 통신
 ├── types/               # TypeScript 타입 정의
-└── utils/               
-    ├── markdownRenderer.ts # 마크다운 파싱
-    └── ...
+└── utils/               # 유틸리티 함수
 ```
 
 ## 테스트
