@@ -56,10 +56,12 @@ export const MarkdownRenderer = ({ text }: MarkdownRendererProps) => {
         />
       ),
       pre: ({ ...props }) => (
-        <pre
-          className="bg-gray-200 dark:bg-gray-800 p-4 rounded-lg my-4 overflow-x-auto"
-          {...props}
-        />
+        <p className="w-full flex">
+          <pre
+            className="bg-gray-200 dark:bg-gray-800 p-4 rounded-lg my-4 overflow-x-auto grow-0"
+            {...props}
+          />
+        </p>
       ),
       blockquote: ({ ...props }) => (
         <blockquote

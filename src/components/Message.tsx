@@ -2,7 +2,7 @@ import { memo } from "react";
 import { Message as MessageType, ROLE } from "@/types/chat";
 import { cn } from "@/utils/cn";
 import { formatDateToString } from "@/utils/formatDate";
-import { MarkdownRenderer } from "@/utils/markdownRenderer";
+import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 
 interface MessageProps {
   message: MessageType;
@@ -22,15 +22,18 @@ export const Message = memo(({ message, className }: MessageProps) => {
     >
       <div
         className={cn(
-          "sm:max-w-[80%] rounded-lg px-4 sm:px-6 py-3 sm:py-4 break-all",
+          "sm:max-w-[80%] w-[calc(100%-1rem)] rounded-xl px-4 sm:px-6 py-3 sm:py-4 break-all",
           isUser
-            ? "bg-gray-200 dark:bg-gray-700"
-            : "bg-blue-100 dark:bg-blue-600"
+            ? "bg-gray-200 dark:bg-gray-700 rounded-tr-xs"
+            : "bg-blue-100 dark:bg-blue-600 rounded-tl-xs"
         )}
       >
-        <div className="prose dark:prose-invert max-w-none">
-          <MarkdownRenderer text={message.text} />
-        </div>
+        <MarkdownRenderer
+          text={
+            message.text +
+            "\n\n```\ncodedfsadfsadfasdfadsfasdfsadfadsfadsfasdfasddsfsadfasdfsadfdsafasdfasdf\n````"
+          }
+        />
       </div>
       <div
         className={cn(
