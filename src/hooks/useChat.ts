@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import {
   ROLE,
   createChatRequestObj,
+  createMessageObj,
   type Message,
   type ChatOptions,
 } from "@/types/chat";
@@ -38,12 +39,12 @@ export const useChat = (options: ChatOptions = DEFAULT_OPTIONS) => {
       setStreamingMessage("");
       streamingMessageRef.current = "";
 
-      const userMsg: Message = {
+      const userMsg: Message = createMessageObj({
         text,
         role: ROLE.User,
         id: uuidv4(),
         created: formatDateToUnix(new Date()),
-      };
+      });
       if (!error) {
         setMessages((prev) => [...prev, userMsg]);
       }
@@ -61,11 +62,11 @@ export const useChat = (options: ChatOptions = DEFAULT_OPTIONS) => {
           responseText = data.choices[0].message.content;
         }
 
-        const systemMsg: Message = {
+        const systemMsg: Message = createMessageObj({
           ...data,
           role: ROLE.System,
           text: responseText,
-        };
+        });
 
         setMessages((prev) => [...prev, systemMsg]);
       } catch (e) {

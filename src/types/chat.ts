@@ -74,3 +74,12 @@ export const createChatRequestObj = (messages: Message[]): ChatRequest => {
     })),
   };
 };
+
+export const createMessageObj = ({ text, role, id, created }: Message) => {
+  return {
+    text,
+    role,
+    id,
+    created,
+  };
+};
